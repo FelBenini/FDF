@@ -82,7 +82,7 @@ $(LIBFT):
 all: $(NAME)
 
 bonus: $(BONUS_OBJS) $(MINILIB) $(LIBFT)
-	$(CC) $(CFLAGS) $(BONUS_OBJS) -o $(NAME) -L$(MINILIB_DIR) -lmlx_Linux -L$(LIBFT_DIR) -lXext -lX11 -lm -lz -lft
+	@$(MAKE) SRCS="$(SRCS_BONUS)"
 
 clean:
 	rm -rf $(OBJS) $(BONUS_OBJS)
