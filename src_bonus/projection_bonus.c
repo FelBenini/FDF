@@ -58,23 +58,19 @@ static void	bend_axis(double x, double y, double *z, t_environment *env)
 	*z += -curve_factor;
 }
 
-t_2dpoint	project_point(t_3dpoint *point3d)
+t_2dpoint	project_point(t_3dpoint *point3d, t_environment *env)
 {
-	t_environment	*env;
-	double			x_val;
-	double			y_val;
-	double			z_val;
+	double	coords[3];
 
-	env = *get_env();
-	x_val = point3d->x;
-	y_val = point3d->y;
-	z_val = -point3d->z * env->z_factor;
-	bend_axis(x_val, y_val, &z_val, env);
-	rotate_x_axis(&y_val, &z_val, env->camera.x_cos, env->camera.x_sin);
-	rotate_y_axis(&x_val, &z_val, env->camera.y_cos, env->camera.y_sin);
-	rotate_z_axis(&x_val, &y_val, env->camera.z_cos, env->camera.z_sin);
+	coords[X] = point3d->x;
+	coords[Y] = point3d->y;
+	coords[Z] = -point3d->z * env->z_factor;
+	bend_axis(coords[X], coords[Y], &coords[Z], env);
+	rotate_x_axis(&coords[Y], &coords[Z], env->camera.x_cos, env->camera.x_sin);
+	rotate_y_axis(&coords[X], &coords[Z], env->camera.y_cos, env->camera.y_sin);
+	rotate_z_axis(&coords[X], &coords[Y], env->camera.z_cos, env->camera.z_sin);
 	if (env->camera.projection == ISOMETRIC)
-		return (isometric_projection(point3d, x_val, y_val, z_val));
+		return (isometric_projection(point3d, coords, env));
 	else
-		return (parallel_projection(point3d, env, x_val, y_val));
+		return (parallel_projection(point3d, env, coords[X], coords[Y]));
 }

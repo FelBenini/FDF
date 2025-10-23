@@ -35,13 +35,11 @@ static void	get_highest_point(t_3dpoint ***map, t_environment **environment)
 	}
 }
 
-void	get_highest_projections(t_3dpoint *point_3d)
+void	get_highest_projections(t_3dpoint *point_3d, t_environment *env)
 {
-	t_environment	*env;
 	t_2dpoint		*point_2d;
 
-	env = *get_env();
-	point_2d = isometric_projection(point_3d);
+	point_2d = isometric_projection(point_3d, env);
 	if (env->highest_x < point_2d->x)
 		env->highest_x = point_2d->x;
 	if (env->lowest_x > point_2d->x)
@@ -53,12 +51,10 @@ void	get_highest_projections(t_3dpoint *point_3d)
 	free(point_2d);
 }
 
-t_environment	**get_env(void)
+static t_environment	*start_env(void)
 {
-	static t_environment	*env;
+	t_environment	*env;
 
-	if (env)
-		return (&env);
 	env = malloc(sizeof(t_environment));
 	env->highest_x = 0;
 	env->lowest_x = 0;
@@ -74,7 +70,7 @@ t_environment	**get_env(void)
 	env->scale = 1.5;
 	if (!env)
 		return (NULL);
-	return (&env);
+	return (env);
 }
 
 t_environment	*init_environment(char *filename)
@@ -82,10 +78,10 @@ t_environment	*init_environment(char *filename)
 	t_environment	*env;
 	char			*title;
 
-	env = *get_env();
+	env = start_env();
 	if (!env)
 		return (NULL);
-	env->map = parse_map(filename);
+	env->map = parse_map(filename, env);
 	env->img.width = 1920;
 	env->img.height = 1080;
 	env->mlx.mlx = mlx_init();

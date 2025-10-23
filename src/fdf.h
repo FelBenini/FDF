@@ -16,6 +16,10 @@
 # include "../libft/libft.h"
 # include "../minilibx/mlx.h"
 
+# define X 0
+# define Y 1
+# define Z 2
+
 typedef struct s_mlx_args
 {
 	void	*win;
@@ -99,22 +103,22 @@ void			draw_line(t_img_data *data, t_2dpoint *from,
 					t_2dpoint *to, int start);
 
 t_2dpoint		*new_2dpoint(int x, int y, int z);
-t_3dpoint		*new_3dpoint(int x, int y, int z, char *color);
-t_2dpoint		*isometric_projection(t_3dpoint *point3d);
+t_3dpoint		*new_3dpoint(int *coords, char *color, t_environment *env);
+t_2dpoint		*isometric_projection(t_3dpoint *point3d, t_environment	*env);
 
 int				close_window(void *params);
 int				handle_keymaps(int keycode, void *params);
 
-t_3dpoint		***parse_map(char *filename);
+t_3dpoint		***parse_map(char *filename, t_environment *env);
 
-t_environment	**get_env(void);
 t_environment	*init_environment(char *filename);
-void			get_highest_projections(t_3dpoint *point_3d);
+void			get_highest_projections(t_3dpoint *point_3d,
+					t_environment *env);
 
 void			clean_env(t_environment *env);
 void			clear_splitted(char **splitted);
 
-unsigned int	get_color(int height);
+unsigned int	get_color(int height, t_environment *env);
 t_rgb			create_rgba(unsigned int color);
 unsigned int	interpolate_rgba(t_rgb start_comp, t_rgb end_comp,
 					double t);

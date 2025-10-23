@@ -33,6 +33,7 @@ static void	reset_perspective(t_environment *env,
 
 static void	handle_numpad(int keycode, t_environment *env)
 {
+	ft_printf("%d\n", keycode);
 	if (keycode == 65438)
 		env->bending_factor = 0;
 	if (keycode == 65429)

@@ -23,15 +23,15 @@ t_2dpoint	*new_2dpoint(int x, int y, int z)
 	return (res);
 }
 
-t_3dpoint	*new_3dpoint(int x, int y, int z, char *color)
+t_3dpoint	*new_3dpoint(int *coords, char *color, t_environment *env)
 {
 	t_3dpoint	*res;
 	static int	count;
 
 	res = (t_3dpoint *)malloc(sizeof(t_3dpoint));
-	res->x = x;
-	res->y = y;
-	res->z = z;
+	res->x = coords[X];
+	res->y = coords[Y];
+	res->z = coords[Z];
 	if (color)
 	{
 		color += 3;
@@ -40,7 +40,7 @@ t_3dpoint	*new_3dpoint(int x, int y, int z, char *color)
 	}
 	else
 		res->color = NULL;
-	get_highest_projections(res);
+	get_highest_projections(res, env);
 	count++;
 	ft_printf("\r⏏️  %d Map points parsed.", count);
 	return (res);

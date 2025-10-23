@@ -12,8 +12,24 @@
 
 #include "fdf.h"
 
+static t_3dpoint	*create_point(int j, int i, char *str,
+								t_environment *env)
+{
+	int			coords[3];
+	t_3dpoint	*res;
+	char		*color;
+
+	coords[X] = j - 1;
+	coords[Y] = i;
+	coords[Z] = ft_atoi(str);
+	color = ft_strnstr(str, "0x", 30);
+	res = new_3dpoint(coords, color, env);
+	return (res);
+}
+
 static t_3dpoint	***convert_list_to_matrix(t_list *head,
-											unsigned int lst_size)
+											unsigned int lst_size,
+											t_environment *env)
 {
 	t_3dpoint		***res;
 	unsigned int	i;
@@ -33,8 +49,7 @@ static t_3dpoint	***convert_list_to_matrix(t_list *head,
 		res[i] = (t_3dpoint **)ft_calloc(j + 1, sizeof(t_3dpoint *));
 		j = 0;
 		while (content[j++])
-			res[i][j - 1] = new_3dpoint(j - 1, i, ft_atoi(content[j - 1]),
-					ft_strnstr(content[j - 1], ",0x", 30));
+			res[i][j - 1] = create_point(j, i, content[j - 1], env);
 		clear_splitted(content);
 		head = head->next;
 		i++;
@@ -42,7 +57,7 @@ static t_3dpoint	***convert_list_to_matrix(t_list *head,
 	return (res);
 }
 
-t_3dpoint	***parse_map(char *filename)
+t_3dpoint	***parse_map(char *filename, t_environment *env)
 {
 	t_list		*head;
 	int			file;
@@ -57,7 +72,7 @@ t_3dpoint	***parse_map(char *filename)
 		line = get_next_line(file);
 		ft_lstadd_back(&head, ft_lstnew(line));
 	}
-	res = convert_list_to_matrix(head, ft_lstsize(head));
+	res = convert_list_to_matrix(head, ft_lstsize(head), env);
 	ft_lstclear(&head, free);
 	return (res);
 }

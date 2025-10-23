@@ -41,12 +41,10 @@ t_rgb	create_rgba(unsigned int color)
 	return (res);
 }
 
-unsigned int	get_color(int height)
+unsigned int	get_color(int height, t_environment *env)
 {
-	t_environment	*env;
 	t_gradient_args	g;
 
-	env = *get_env();
 	g.start_rgb = create_rgba(env->colors[0]);
 	g.end_rgb = create_rgba(env->colors[1]);
 	if (env->highest_z != env->lowest_z)

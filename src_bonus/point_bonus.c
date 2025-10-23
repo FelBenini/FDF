@@ -23,17 +23,15 @@ t_2dpoint	*new_2dpoint(int x, int y, int z)
 	return (res);
 }
 
-t_3dpoint	*new_3dpoint(int x, int y, int z, char *color)
+t_3dpoint	*new_3dpoint(int *coords, char *color, t_environment *env)
 {
 	t_3dpoint		*res;
 	static int		count;
-	t_environment	*env;
 
-	env = *get_env();
 	res = (t_3dpoint *)malloc(sizeof(t_3dpoint));
-	res->x = x;
-	res->y = y;
-	res->z = z;
+	res->x = coords[X];
+	res->y = coords[Y];
+	res->z = coords[Z];
 	res->color = 0;
 	res->has_color = 1;
 	if (color)
@@ -44,20 +42,18 @@ t_3dpoint	*new_3dpoint(int x, int y, int z, char *color)
 	}
 	else
 		res->has_color = 0;
-	get_highest_projections(res);
+	get_highest_projections(res, env);
 	count++;
 	env->total_map_points = count;
 	return (res);
 }
 
-void	normalize_map(t_3dpoint ***map)
+void	normalize_map(t_3dpoint ***map, t_environment *env)
 {
 	int				i;
 	int				j;
-	t_environment	*env;
 
 	i = 0;
-	env = *get_env();
 	while (map[i])
 	{
 		j = 0;
@@ -80,7 +76,7 @@ void	normalize_frames(t_environment *env)
 	current = env->frames;
 	while (current)
 	{
-		normalize_map(current->content);
+		normalize_map(current->content, env);
 		current = current->next;
 	}
 	env->total_map_points /= ft_lstsize(env->frames);

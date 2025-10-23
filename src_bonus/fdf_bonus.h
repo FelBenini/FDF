@@ -20,6 +20,10 @@
 # define PARALLEL 0
 # define ISOMETRIC 1
 
+# define X 0
+# define Y 1
+# define Z 2
+
 typedef struct s_mlx_args
 {
 	void	*win;
@@ -132,12 +136,12 @@ void			draw_line(t_img_data *data, t_2dpoint from,
 					t_2dpoint to, int start);
 
 t_2dpoint		*new_2dpoint(int x, int y, int z);
-t_3dpoint		*new_3dpoint(int x, int y, int z, char *color);
-t_2dpoint		project_point(t_3dpoint *point3d);
+t_3dpoint		*new_3dpoint(int *coords, char *color, t_environment *env);
+t_2dpoint		project_point(t_3dpoint *point3d, t_environment *env);
 t_2dpoint		parallel_projection(t_3dpoint *point3d, t_environment *env,
 					double x_val, double y_val);
-t_2dpoint		isometric_projection(t_3dpoint *point3d, double x_val,
-					double y_val, double z_val);
+t_2dpoint		isometric_projection(t_3dpoint *point3d, double *coords,
+					t_environment *env);
 t_2dpoint		curvilinear_projection(t_3dpoint *point3d, double x_val,
 					double y_val, double z_val);
 void			normalize_frames(t_environment *env);
@@ -146,19 +150,19 @@ int				close_window(void *params);
 int				handle_keymaps(int keycode, void *params);
 void			handle_color_change(int key, t_environment *env);
 
-void			get_dimensions(t_3dpoint ***matrix);
-t_3dpoint		***parse_map(t_list **head);
+void			get_dimensions(t_3dpoint ***matrix, t_environment *env);
+t_3dpoint		***parse_map(t_list **head, t_environment *env);
 
-t_environment	**get_env(void);
 t_environment	*init_environment(char *filename);
-void			get_highest_projections(t_3dpoint *point_3d);
+void			get_highest_projections(t_3dpoint *point_3d,
+					t_environment *env);
 void			initialize_camera(t_environment *env);
 
 void			clean_env(t_environment *env);
 void			clear_splitted(void *splitted);
 void			clear_matrix(void *ptr);
 
-unsigned int	get_color(int height);
+unsigned int	get_color(int height, t_environment *env);
 
 t_list			*validate_input(int fd);
 
@@ -175,7 +179,7 @@ int				mouse_move(int x, int y, void *param);
 
 void			print_menu(t_environment *env);
 
-t_list			*parse_frames(char *directory_name);
+t_list			*parse_frames(char *directory_name, t_environment *env);
 int				loop_through_frames(t_environment *env);
 
 #endif

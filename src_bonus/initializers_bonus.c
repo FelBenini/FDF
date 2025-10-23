@@ -40,13 +40,11 @@ static void	get_highest_point(t_3dpoint ***map, t_environment **environment)
 		env->z_factor = 0.3;
 }
 
-void	get_highest_projections(t_3dpoint *point_3d)
+void	get_highest_projections(t_3dpoint *point_3d, t_environment *env)
 {
-	t_environment	*env;
 	t_2dpoint		point_2d;
 
-	env = *get_env();
-	point_2d = project_point(point_3d);
+	point_2d = project_point(point_3d, env);
 	if (env->highest_x > point_2d.x)
 		env->highest_x = point_2d.x;
 	if (env->lowest_x < point_2d.x)
@@ -57,12 +55,10 @@ void	get_highest_projections(t_3dpoint *point_3d)
 		env->lowest_y = point_2d.y;
 }
 
-t_environment	**get_env(void)
+static t_environment	*start_env(void)
 {
-	static t_environment	*env;
+	t_environment	*env;
 
-	if (env)
-		return (&env);
 	env = malloc(sizeof(t_environment));
 	if (!env)
 		return (NULL);
@@ -83,7 +79,7 @@ t_environment	**get_env(void)
 	env->z_factor = 0.5;
 	env->is_color_terrain = 0;
 	env->bending_factor = 0;
-	return (&env);
+	return (env);
 }
 
 static void	init_structs(t_environment *env, char *filename)
@@ -97,14 +93,14 @@ static void	init_structs(t_environment *env, char *filename)
 	env->img.height = 1080;
 	env->menu.height = 1080;
 	env->menu.width = 280;
-	env->frames = parse_frames(filename);
+	env->frames = parse_frames(filename, env);
 	if (!env->frames)
 	{
 		free(env);
 		exit(1);
 	}
 	env->map = env->frames->content;
-	get_dimensions(env->map);
+	get_dimensions(env->map, env);
 	env->mlx.mlx = mlx_init();
 }
 
@@ -113,7 +109,7 @@ t_environment	*init_environment(char *filename)
 	t_environment	*env;
 	char			*title;
 
-	env = *get_env();
+	env = start_env();
 	init_structs(env, filename);
 	title = ft_strjoin("FDF - ", filename);
 	env->mlx.win = mlx_new_window(env->mlx.mlx, 1920,

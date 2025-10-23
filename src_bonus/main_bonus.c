@@ -42,7 +42,7 @@ static int	count_line_size(t_3dpoint **line)
 }
 
 static void	create_lines(t_3dpoint ***matrix, t_img_data *img_data,
-						int i)
+						int i, t_environment *env)
 {
 	t_2dpoint	point;
 	t_2dpoint	next_point;
@@ -55,15 +55,15 @@ static void	create_lines(t_3dpoint ***matrix, t_img_data *img_data,
 		next_line_size = count_line_size(matrix[i + 1]);
 	while (matrix[i][j])
 	{
-		point = project_point(matrix[i][j]);
+		point = project_point(matrix[i][j], env);
 		if (matrix[i][j + 1])
 		{
-			next_point = project_point(matrix[i][j + 1]);
+			next_point = project_point(matrix[i][j + 1], env);
 			draw_line(img_data, point, next_point, 0);
 		}
 		if (matrix[i + 1] && j < next_line_size)
 		{
-			next_point = project_point(matrix[i + 1][j]);
+			next_point = project_point(matrix[i + 1][j], env);
 			draw_line(img_data, point, next_point, 0);
 		}
 		j++;
@@ -88,7 +88,7 @@ void	print_matrix(t_environment *env)
 		set_background(&env->img);
 		while (matrix[i])
 		{
-			create_lines(matrix, &env->img, i);
+			create_lines(matrix, &env->img, i, env);
 			i++;
 		}
 		mlx_put_image_to_window(env->mlx.mlx, env->mlx.win,

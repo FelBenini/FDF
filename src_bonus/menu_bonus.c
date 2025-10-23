@@ -30,49 +30,44 @@ static void	fill_color(t_img_data *img)
 	}
 }
 
-static void	put_str(int y, int x, int color, char *str)
+static void	put_str(int y, int x, char *str, t_environment *env)
 {
-	t_environment	*env;
-
-	env = *get_env();
 	mlx_string_put(env->mlx.mlx, env->mlx.win,
-		x, y, color, str);
+		x, y, 0xFFFFFFFF, str);
 }
 
-static void	put_banner(void)
+static void	put_banner(t_environment *env)
 {
 	int	start;
-	int	color;
 	int	r;
 
 	start = 32;
-	color = 0xFFFFFF;
 	r = 1700;
-	put_str(start, r, color, "  .-.          ___    .-.");
-	put_str(start + 12, r, color, " /    \\       (   )  /    \\ ");
-	put_str(start + 24, r, color, " | .`. ;    .-.| |   | .`. ;  ");
-	put_str(start + 36, r, color, " | |(___)  /   \\ |   | |(___) ");
-	put_str(start + 48, r, color, " | |_     |  .-. |   | |_     ");
-	put_str(start + 60, r, color, "(   __)   | |  | |  (   __)   ");
-	put_str(start + 72, r, color, " | |      | |  | |   | |      ");
-	put_str(start + 84, r, color, " | |      | |  | |   | |      ");
-	put_str(start + 96, r, color, " | |      | '  | |   | |      ");
-	put_str(start + 108, r, color, " | |      ' `-'  /   | |      ");
-	put_str(start + 120, r, color, "(___)      `.__,'   (___)     ");
+	put_str(start, r, "  .-.          ___    .-.", env);
+	put_str(start + 12, r, " /    \\       (   )  /    \\ ", env);
+	put_str(start + 24, r, " | .`. ;    .-.| |   | .`. ;  ", env);
+	put_str(start + 36, r, " | |(___)  /   \\ |   | |(___) ", env);
+	put_str(start + 48, r, " | |_     |  .-. |   | |_     ", env);
+	put_str(start + 60, r, "(   __)   | |  | |  (   __)   ", env);
+	put_str(start + 72, r, " | |      | |  | |   | |      ", env);
+	put_str(start + 84, r, " | |      | |  | |   | |      ", env);
+	put_str(start + 96, r, " | |      | '  | |   | |      ", env);
+	put_str(start + 108, r, " | |      ' `-'  /   | |      ", env);
+	put_str(start + 120, r, "(___)      `.__,'   (___)     ", env);
 }
 
-static void	print_numpad(void)
+static void	print_numpad(t_environment *env)
 {
-	put_str(552, 1672, 0xFFFFFFF, "0 NUMPAD:       RESET WAVY EFFECT");
-	put_str(572, 1672, 0xFFFFFFF, "1 NUMPAD:       VIEWING FROM Y ANGLE");
-	put_str(592, 1672, 0xFFFFFFF, "2 NUMPAD:       BETWEEN Y & X ANGLE");
-	put_str(612, 1672, 0xFFFFFFF, "3 NUMPAD:       VIEWING FROM X ANGLE");
-	put_str(632, 1672, 0xFFFFFFF, "4 NUMPAD:       BETWEEN TOP & Y ANGLE");
-	put_str(652, 1672, 0xFFFFFFF, "5 NUMPAD:       ISOMETRIC PROJECTION");
-	put_str(672, 1672, 0xFFFFFFF, "6 NUMPAD:       SIDELINES DIAGONAL");
-	put_str(692, 1672, 0xFFFFFFF, "7 NUMPAD:       PARALLEL PROJECTION");
-	put_str(712, 1672, 0xFFFFFFF, "8 NUMPAD:       BETWEEN PARALLEL & ISO");
-	put_str(732, 1672, 0xFFFFFFF, "9 NUMPAD:       PARALLEL FROM THE SIDE");
+	put_str(552, 167, "0 NUMPAD:       RESET WAVY EFFECT", env);
+	put_str(572, 1672, "1 NUMPAD:       VIEWING FROM Y ANGLE", env);
+	put_str(592, 1672, "2 NUMPAD:       BETWEEN Y & X ANGLE", env);
+	put_str(612, 1672, "3 NUMPAD:       VIEWING FROM X ANGLE", env);
+	put_str(632, 1672, "4 NUMPAD:       BETWEEN TOP & Y ANGLE", env);
+	put_str(652, 1672, "5 NUMPAD:       ISOMETRIC PROJECTION", env);
+	put_str(672, 1672, "6 NUMPAD:       SIDELINES DIAGONAL", env);
+	put_str(692, 1672, "7 NUMPAD:       PARALLEL PROJECTION", env);
+	put_str(712, 1672, "8 NUMPAD:       BETWEEN PARALLEL & ISO", env);
+	put_str(732, 1672, "9 NUMPAD:       PARALLEL FROM THE SIDE", env);
 }
 
 void	print_menu(t_environment *env)
@@ -80,24 +75,24 @@ void	print_menu(t_environment *env)
 	fill_color(&env->menu);
 	mlx_put_image_to_window(env->mlx.mlx, env->mlx.win,
 		env->menu.img, 1920 - env->menu.width, 0);
-	put_banner();
-	put_str(188, 1672, 0xFFFFFF, "_______________COLORS________________");
-	put_str(212, 1678, 0xFFFFFF, "0. DEFAULT");
-	put_str(232, 1678, 0xFFFFFF, "1. TERRAIN");
-	put_str(212, 1798, 0xFFFFFF, "2. VOID");
-	put_str(232, 1798, 0xFFFFFF, "3. LAND");
-	put_str(300, 1672, 0xFFFFFF, "______________CONTROLS_______________");
-	put_str(332, 1672, 0xFFFFFF, "ARROW KEYS:      ROTATE");
-	put_str(362, 1672, 0xFFFFFF, "WASD:            MOVE MODEL");
-	put_str(392, 1672, 0xFFFFFF, "V AND B KEYS:    APPLY WAVY EFFECT");
-	put_str(422, 1672, 0xFFFFFF, "MOUSE SCROLL:    ZOOM IN AND OUT");
-	put_str(452, 1672, 0xFFFFFF, "[ AND ] KEYS:    MODIFY HEIGHT");
-	put_str(522, 1672, 0xFFFFFF, "___________NUMPAD_CONTROLS___________");
-	print_numpad();
-	put_str(772, 1672, 0xFFFFFF, "___________MOUSE__CONTROLS___________");
-	put_str(812, 1672, 0xFFFFFF, "- HOLD SCROLL AND MOVE TO ROTATE MODEL");
-	put_str(832, 1672, 0xFFFFFF, "- HOLD RIGHT CLICK AND MOVE THE MOUSE TO");
-	put_str(848, 1672, 0xFFFFFF, "TO TRANSLATE THE MODEL");
-	put_str(888, 1672, 0xFFFFFF, "_____________PROJECTIONS____________");
-	put_str(918, 1672, 0xFFFFFF, "I. ISOMETRIC           P. PARALLEL");
+	put_banner(env);
+	put_str(188, 1672, "_______________COLORS________________", env);
+	put_str(212, 1678, "0. DEFAULT", env);
+	put_str(232, 1678, "1. TERRAIN", env);
+	put_str(212, 1798, "2. VOID", env);
+	put_str(232, 1798, "3. LAND", env);
+	put_str(300, 1672, "______________CONTROLS_______________", env);
+	put_str(332, 1672, "ARROW KEYS:      ROTATE", env);
+	put_str(362, 1672, "WASD:            MOVE MODEL", env);
+	put_str(392, 1672, "V AND B KEYS:    APPLY WAVY EFFECT", env);
+	put_str(422, 1672, "MOUSE SCROLL:    ZOOM IN AND OUT", env);
+	put_str(452, 1672, "[ AND ] KEYS:    MODIFY HEIGHT", env);
+	put_str(522, 1672, "___________NUMPAD_CONTROLS___________", env);
+	print_numpad(env);
+	put_str(772, 1672, "___________MOUSE__CONTROLS___________", env);
+	put_str(812, 1672, "- HOLD SCROLL AND MOVE TO ROTATE MODEL", env);
+	put_str(832, 1672, "- HOLD RIGHT CLICK AND MOVE THE MOUSE TO", env);
+	put_str(848, 1672, "TO TRANSLATE THE MODEL", env);
+	put_str(888, 1672, "_____________PROJECTIONS____________", env);
+	put_str(1008, 1672, "I. ISOMETRIC           P. PARALLEL", env);
 }

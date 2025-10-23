@@ -14,7 +14,8 @@
 #include <fcntl.h>
 #include <sys/time.h>
 
-static t_list	*parse_single_frame(char *directory_name, char *iter)
+static t_list	*parse_single_frame(char *directory_name, char *iter,
+									t_environment *env)
 {
 	char	*file_name;
 	char	*final_name;
@@ -39,18 +40,18 @@ static t_list	*parse_single_frame(char *directory_name, char *iter)
 		return (NULL);
 	}
 	free(final_name);
-	res = ft_lstnew(parse_map(&file_content));
+	res = ft_lstnew(parse_map(&file_content, env));
 	return (res);
 }
 
-static t_list	*loop_through_files(char *directory_name)
+static t_list	*loop_through_files(char *directory_name, t_environment *env)
 {
 	int		i;
 	t_list	*frame;
 	t_list	*head;
 
 	i = 0;
-	frame = parse_single_frame(directory_name, ft_itoa(i++));
+	frame = parse_single_frame(directory_name, ft_itoa(i++), env);
 	if (!frame)
 	{
 		free(directory_name);
@@ -62,7 +63,7 @@ static t_list	*loop_through_files(char *directory_name)
 	ft_printf("📹 Parsing animated fdf.\n\n");
 	while (frame)
 	{
-		frame = parse_single_frame(directory_name, ft_itoa(i++));
+		frame = parse_single_frame(directory_name, ft_itoa(i++), env);
 		ft_printf("✅ Parsed %d frames\r", i);
 		ft_lstadd_back(&head, frame);
 	}
@@ -71,7 +72,7 @@ static t_list	*loop_through_files(char *directory_name)
 	return (head);
 }
 
-t_list	*parse_frames(char *directory_name)
+t_list	*parse_frames(char *directory_name, t_environment *env)
 {
 	t_list	*head;
 	t_list	*frame;
@@ -89,13 +90,13 @@ t_list	*parse_frames(char *directory_name)
 			ft_lstclear(&file_content, free);
 			return (NULL);
 		}
-		frame = ft_lstnew(parse_map(&file_content));
+		frame = ft_lstnew(parse_map(&file_content, env));
 		ft_lstclear(&file_content, free);
 		head = frame;
 		ft_printf("👍 Map is valid!\n");
 		return (head);
 	}
-	head = loop_through_files(ft_strjoin(directory_name, "/"));
+	head = loop_through_files(ft_strjoin(directory_name, "/"), env);
 	return (head);
 }
 

@@ -83,12 +83,10 @@ unsigned int	get_terrain_color(int height, t_environment *env)
 	return (interpolate_color(color1, color2, t));
 }
 
-unsigned int	get_color(int height)
+unsigned int	get_color(int height, t_environment *env)
 {
-	t_environment	*env;
 	t_gradient_args	g;
 
-	env = *get_env();
 	if (env->is_color_terrain)
 		return (get_terrain_color(height, env));
 	g.start_rgb = env->colors[0];
