@@ -34,7 +34,7 @@ t_3dpoint	*new_3dpoint(int *coords, char *color, t_environment *env)
 	res->z = coords[Z];
 	if (color)
 	{
-		color += 3;
+		color += 2;
 		res->color = ft_strdup(color);
 		ft_strupcase(res->color);
 	}

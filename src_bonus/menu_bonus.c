@@ -94,5 +94,5 @@ void	print_menu(t_environment *env)
 	put_str(832, 1672, "- HOLD RIGHT CLICK AND MOVE THE MOUSE TO", env);
 	put_str(848, 1672, "TO TRANSLATE THE MODEL", env);
 	put_str(888, 1672, "_____________PROJECTIONS____________", env);
-	put_str(1008, 1672, "I. ISOMETRIC           P. PARALLEL", env);
+	put_str(918, 1672, "I. ISOMETRIC           P. PARALLEL", env);
 }

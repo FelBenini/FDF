@@ -36,7 +36,7 @@ t_3dpoint	*new_3dpoint(int *coords, char *color, t_environment *env)
 	res->has_color = 1;
 	if (color)
 	{
-		color += 3;
+		color += 2;
 		ft_strupcase(color);
 		res->color = ft_atoi_base(color, "0123456789ABCDEF");
 	}
